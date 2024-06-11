@@ -5,6 +5,7 @@ export enum SalaryPayFormEnum {
 
 export interface SalaryPayForm {
   type: SalaryPayFormEnum;
+  value: number;
 }
 
 export interface EmployeeEntity {
