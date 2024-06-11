@@ -12,6 +12,12 @@ export interface Config {
     debug: boolean;
     connectionString: string;
   };
+  redis: {
+    host: string;
+    port: number;
+  };
+  updateJobBatchSize: number;
+  jobProcessorConcurrency: number;
 }
 
 export const defaultConfig: Config = {
@@ -24,4 +30,10 @@ export const defaultConfig: Config = {
     debug: !!process.env.MONGO_DEBUG || false,
     connectionString: process.env.MONGO_CONNECTION_STRING || 'mongodb://localhost:27017/salary-app',
   },
+  redis: {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: Number(process.env.REDIS_PORT) || 6379,
+  },
+  updateJobBatchSize: Number(process.env.UPDATE_JOB_BATCH_SIZE) || 1000,
+  jobProcessorConcurrency: Number(process.env.JOB_PROCESSOR_CONCURRENCY) || 5,
 };
