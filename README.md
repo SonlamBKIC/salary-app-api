@@ -81,3 +81,15 @@ In the [employee-job.service.ts](/src/modules/cron-jobs/employee-job.service.ts)
 cd video-hub-api
 npm run start:dev
 ```
+
+## Database design 
+- Design of the employee collection
+
+![Employee Context](/designs/EmployeeContext.png)
+
+## Solution design
+
+- The solution is a cron job run at midnight to trigger the recalculate employee account balance process. The cron job will create all the batch jobs needed and send it to the **Job Queue**. The **Job Queue** will have multiple **Processor** to process the batch job and update the new data to the **Database**.
+- One thing to note here is that the Job's **Processor** can be distributed so we can scale the number of **Processors** indefinitely when the employees number growth. The only bottleneck here is the write capacity of the Database itself.
+
+![Cron Job Solution](/designs/CronJobSolution.png)

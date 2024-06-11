@@ -1,0 +1,28 @@
+@startuml EmployeeContext
+  skinparam componentStyle rectangle
+
+  title EmployeeContext
+
+  entity Employee {
+    - id: string
+    - name: string
+    - accountValue: number
+    - createdAt: Date
+    - lastModifiedAt: Date
+  }
+
+  object SalaryPayForm {
+    - type: SalaryPayFormEnum
+    - value: number
+  }
+
+  enum SalaryPayFormEnum {
+    + MONTHLY
+    + DAILY
+  }
+
+  Employee *--"1" SalaryPayForm
+  SalaryPayForm *-- SalaryPayFormEnum
+
+  note right of Employee: accountValue is the \n employee account's balance
+@enduml

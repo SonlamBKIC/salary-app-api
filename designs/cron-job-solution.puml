@@ -1,0 +1,25 @@
+@startuml CronJobSolution
+
+card CronJob
+note right of CronJob: Run at midnight
+
+card JobQueue
+card JobProcessor1
+card JobProcessor2
+card JobProcessor3
+card JobProcessor4
+
+database Database
+
+CronJob --> JobQueue : create all batch jobs
+JobQueue --> JobProcessor1
+JobQueue --> JobProcessor2
+JobQueue --> JobProcessor3
+JobQueue --> JobProcessor4
+
+JobProcessor1 --> Database: batch update
+JobProcessor2 --> Database: batch update
+JobProcessor3 --> Database: batch update
+JobProcessor4 --> Database: batch update
+
+@enduml
