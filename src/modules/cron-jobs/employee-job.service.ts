@@ -16,21 +16,35 @@ export class EmployeeJob {
   // @Cron(CronExpression.EVERY_30_SECONDS)
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async updateEmployeesAccountValue() {
-    this.logger.log('Start updating employees account value!');
+    try {
+      this.logger.log('Start updating employees account value!');
 
-    const totalEmployeeNumber = await this.employeeModel.countDocuments({});
-    const limit = config.updateJobBatchSize;
-    let skip = 0;
+      const totalEmployeeNumber = await this.employeeModel.countDocuments({});
+      const limit = config.updateJobBatchSize;
+      let skip = 0;
 
-    while (skip < totalEmployeeNumber) {
-      await this.employeeAccountValueQueue.add(Task.DailyUpdate, {
-        totalEmployeeNumber,
-        limit,
-        skip,
-      });
-      skip = skip + limit;
+      while (skip < totalEmployeeNumber) {
+        await this.employeeAccountValueQueue.add(
+          Task.DailyUpdate,
+          {
+            totalEmployeeNumber,
+            limit,
+            skip,
+          },
+          {
+            attempts: 5,
+            backoff: {
+              type: 'exponential',
+              delay: 1000,
+            },
+          },
+        );
+        skip = skip + limit;
+      }
+
+      this.logger.log('All employees account job created!');
+    } catch (error) {
+      this.logger.error('Failed to start updating employees account value!', error);
     }
-
-    this.logger.log('All employees account job created!');
   }
 }

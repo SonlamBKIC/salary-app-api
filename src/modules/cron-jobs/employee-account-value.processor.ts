@@ -25,25 +25,31 @@ export class EmployeeAccountValueProcessor {
     const limit = job.data.limit;
     const skip = job.data.skip;
 
-    if (!isNaN(limit) && !isNaN(skip)) {
-      const employeesData = await this.employeeModel.find({}).limit(limit).skip(skip).batchSize(100);
+    try {
+      if (!isNaN(limit) && !isNaN(skip)) {
+        const employeesData = await this.employeeModel.find({}).limit(limit).skip(skip).batchSize(100);
 
-      const writeOps = [];
-      for (const employee of employeesData) {
-        writeOps.push({
-          updateOne: {
-            filter: {
-              _id: employee._id,
+        const writeOps = [];
+        for (const employee of employeesData) {
+          writeOps.push({
+            updateOne: {
+              filter: {
+                _id: employee._id,
+              },
+              update: {
+                accountValue: this.employeesService.recalculateEmployeeAccountValue(employee).accountValue,
+              },
             },
-            update: {
-              accountValue: this.employeesService.recalculateEmployeeAccountValue(employee).accountValue,
-            },
-          },
-        });
+          });
+        }
+
+        await this.employeeModel.bulkWrite(writeOps);
+        this.logger.log(`Daily update employee account done for skip ${skip} and limit ${limit}`);
       }
-
-      await this.employeeModel.bulkWrite(writeOps);
-      this.logger.log(`Daily update employee account done for skip ${skip} and limit ${limit}`);
+    } catch (error) {
+      this.logger.error(`Daily update employee account error for skip ${skip} and limit ${limit}`);
+      this.logger.error(error);
+      throw error;
     }
   }
 }
