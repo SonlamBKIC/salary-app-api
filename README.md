@@ -55,7 +55,7 @@ npm run init-data
 Running the api project in development environment.
 
 ```sh
-cd video-hub-api
+cd salary-app-api
 npm run start:dev
 ```
 
@@ -64,21 +64,21 @@ npm run start:dev
 - Unit test
 
 ```sh
-cd video-hub-api
+cd salary-app-api
 npm run test
 ```
 
 - End to End test
 
 ```sh
-cd video-hub-api
+cd salary-app-api
 npm run test:e2e
 ```
 
 - Manual test \
 In the [employee-job.service.ts](/src/modules/cron-jobs/employee-job.service.ts) file, change the **CronExpression** from **EVERY_DAY_AT_MIDNIGHT** to something smaller (for example **EVERY_30_SECONDS**) then start the app in development mode to test.
 ```sh
-cd video-hub-api
+cd salary-app-api
 npm run start:dev
 ```
 
