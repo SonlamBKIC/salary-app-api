@@ -1,73 +1,83 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Salary App Api
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Server for salary app
+
+## Prerequisites
+
+- [NodeJS](https://nodejs.org/en/download/) version 16 or above
+- [MongoDB](https://www.mongodb.com/docs/manual/installation/) version 6 or above
+- [Redis](https://redis.io/downloads/) version 6 or above
 
 ## Installation
 
-```bash
-$ npm install
+1. Clone the repository.
+
+```sh
+git clone https://github.com/SonlamBKIC/salary-app-api.git
 ```
 
-## Running the app
+2. Install the dependencies for the project.
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```sh
+cd salary-api-api
+npm install
 ```
 
-## Test
+3. Configure the project by creating an **.env** file in the salary-app-api folder then add your necessary configuration to the .env file.
 
-```bash
-# unit tests
-$ npm run test
+Description for each variables are in the [.env.example](.env.example) file. Below is an example **.env** file for the project.
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```env
+NODE_ENV=development
+PORT=3000
+MONGO_CONNECTION_STRING="mongodb://localhost:27017/salary-app"
+REDIS_HOST="localhost"
+REDIS_PORT=6379
+UPDATE_JOB_BATCH_SIZE=1000
+JOB_PROCESSOR_CONCURRENCY=5
 ```
 
-## Support
+## Database initialization
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Do this if you want to have initial data before starting the app for the first time.
+This script will create **100000** new employee documents in the database each time it runs.
 
-## Stay in touch
+```sh
+cd salary-app-api
+npm run build
+npm run init-data
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Running application in development environment
 
-## License
+Running the api project in development environment.
 
-Nest is [MIT licensed](LICENSE).
+```sh
+cd video-hub-api
+npm run start:dev
+```
+
+## Testing
+
+- Unit test
+
+```sh
+cd video-hub-api
+npm run test
+```
+
+- End to End test
+
+```sh
+cd video-hub-api
+npm run test:e2e
+```
+
+- Manual test \
+In the [employee-job.service.ts](/src/modules/cron-jobs/employee-job.service.ts) file, change the **CronExpression** from **EVERY_DAY_AT_MIDNIGHT** to something smaller (for example **EVERY_30_SECONDS**) then start the app in development mode to test.
+```sh
+cd video-hub-api
+npm run start:dev
+```
