@@ -15,6 +15,7 @@ export interface Config {
   redis: {
     host: string;
     port: number;
+    password?: string;
   };
   updateJobBatchSize: number;
   jobProcessorConcurrency: number;
@@ -33,6 +34,7 @@ export const defaultConfig: Config = {
   redis: {
     host: process.env.REDIS_HOST || 'localhost',
     port: Number(process.env.REDIS_PORT) || 6379,
+    password: process.env.REDIS_PASSWORD || undefined,
   },
   updateJobBatchSize: Number(process.env.UPDATE_JOB_BATCH_SIZE) || 1000,
   jobProcessorConcurrency: Number(process.env.JOB_PROCESSOR_CONCURRENCY) || 5,
